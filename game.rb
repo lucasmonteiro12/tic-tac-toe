@@ -12,10 +12,10 @@ class Game
   end
 
   def start_game
-    until game_is_over(board) || tie(board)
+    until game_is_over?(board) || tie?(board)
       board.print_board
       get_spot
-      unless game_is_over(board) || tie(board)
+      unless game_is_over?(board) || tie?(board)
         evaluate_board
       end
     end
@@ -24,19 +24,23 @@ class Game
   end
 
   def get_spot
-    print 'Enter [0-8]:'
     spot = nil
+    print 'Enter [0-8]:'
     until spot
       spot = gets.chomp.to_i
       if board.tiles[spot] != "X" && board.tiles[spot] != "O"
-        board.tiles[spot] = human.icon
+        set_spot(spot)
       else
         spot = nil
       end
     end
   end
 
-  def game_is_over(board)
+  def set_spot(spot)
+    board.tiles[spot] = human.icon
+  end
+
+  def game_is_over?(board)
     [board.tiles[0], board.tiles[1], board.tiles[2]].uniq.length == 1 ||
     [board.tiles[3], board.tiles[4], board.tiles[5]].uniq.length == 1 ||
     [board.tiles[6], board.tiles[7], board.tiles[8]].uniq.length == 1 ||
@@ -47,7 +51,7 @@ class Game
     [board.tiles[2], board.tiles[4], board.tiles[6]].uniq.length == 1
   end
 
-  def tie(board)
+  def tie?(board)
     board.tiles.all? { |s| s == "X" || s == "O" }
   end
 
@@ -61,13 +65,13 @@ class Game
     end
     available_spaces.each do |as|
       board.tiles[as.to_i] = computer.icon
-      if game_is_over(board)
+      if game_is_over?(board)
         best_move = as.to_i
         board.tiles[as.to_i] = as
         return best_move
       else
         board.tiles[as.to_i] = human.icon
-        if game_is_over(board)
+        if game_is_over?(board)
           best_move = as.to_i
           board.tiles[as.to_i] = as
           return best_move
@@ -100,7 +104,4 @@ class Game
       end
     end
   end
-
-  game = Game.new
-  game.start_game
 end
