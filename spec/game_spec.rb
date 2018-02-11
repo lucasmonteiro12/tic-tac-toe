@@ -42,4 +42,27 @@ describe Game do
       expect(game.board.tiles[2]).to eq('O')
     end
   end
+
+  describe '#valid_spot?' do
+    context 'with a value between 0 and 8' do
+      it 'returns true' do
+        game.board.tiles = ['0', '1', '2', '3', '4', '5', '6', '7', '8']
+        expect(game.valid_spot?(5)).to eq(true)
+      end
+    end
+
+    context 'with a value over 8' do
+      it 'returns false' do
+        game.board.tiles = ['0', '1', '2', '3', '4', '5', '6', '7', '8']
+        expect(game.valid_spot?(12)).to eq(false)
+      end
+    end
+
+    context 'with an already picked spot' do
+      it 'returns false' do
+        game.board.tiles = ['0', '1', '2', '3', '4', 'X', '6', '7', '8']
+        expect(game.valid_spot?(5)).to eq(false)
+      end
+    end
+  end
 end

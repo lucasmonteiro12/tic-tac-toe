@@ -26,7 +26,7 @@ class Game
 
   def get_difficulty
     until computer.difficulty
-      print 'Choose the difficulty [Easy, Medium or Hard]:'
+      print 'Choose the difficulty [Easy, Medium or Hard]: '
       computer.set_difficulty(gets.chomp.to_s)
     end
     puts "You picked #{computer.difficulty}"
@@ -34,15 +34,19 @@ class Game
 
   def get_spot
     spot = nil
-    print 'Enter [0-8]:'
     until spot
+      print 'Enter [0-8]: '
       spot = gets.chomp.to_i
-      if board.tiles[spot] != "X" && board.tiles[spot] != "O"
+      if valid_spot?(spot)
         set_spot(spot)
       else
         spot = nil
       end
     end
+  end
+
+  def valid_spot?(spot)
+    board.tiles[spot] != "X" && board.tiles[spot] != "O" && spot.between?(0, 8)
   end
 
   def set_spot(spot)
