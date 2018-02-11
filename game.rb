@@ -12,6 +12,7 @@ class Game
   end
 
   def start_game
+    get_difficulty
     until game_is_over?(board) || tie?(board)
       board.print_board
       get_spot
@@ -21,6 +22,14 @@ class Game
     end
     board.print_board
     puts "Game over"
+  end
+
+  def get_difficulty
+    until computer.difficulty
+      print 'Choose the difficulty [Easy, Medium or Hard]:'
+      computer.set_difficulty(gets.chomp.to_s)
+    end
+    puts "You picked #{computer.difficulty}"
   end
 
   def get_spot
@@ -88,6 +97,20 @@ class Game
     end
   end
 
+  def get_random_move
+    spot = rand(9)
+  end
+
+  def get_average_move
+    random = rand(10)
+    if random > 3
+      spot = get_best_move(board, computer.icon)
+    else
+      spot = get_random_move
+    end
+    spot
+  end
+
   def evaluate_board
     spot = nil
     until spot
@@ -95,7 +118,9 @@ class Game
         spot = 4
         board.tiles[spot] = computer.icon
       else
-        spot = get_best_move(board, computer.icon)
+        spot = get_random_move if computer.difficulty == 'Easy'
+        spot = get_average_move if computer.difficulty == 'Medium'
+        spot = get_best_move(board, computer.icon) if computer.difficulty == 'Hard'
         if board.tiles[spot] != "X" && board.tiles[spot] != "O"
           board.tiles[spot] = computer.icon
         else
@@ -103,5 +128,5 @@ class Game
         end
       end
     end
-  end
+end
 end
