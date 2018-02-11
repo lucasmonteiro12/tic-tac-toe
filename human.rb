@@ -1,7 +1,4 @@
-class Human
-  attr_reader :icon
+require_relative 'player'
 
-  def initialize(icon)
-    @icon = icon
-  end
+class Human < Player
 end
