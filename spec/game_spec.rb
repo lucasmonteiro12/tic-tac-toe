@@ -8,12 +8,8 @@ describe Game do
       expect(game.board).to_not be_nil
     end
 
-    it 'initializes the computer' do
-      expect(game.computer).to_not be_nil
-    end
-
-    it 'initializes the human' do
-      expect(game.human).to_not be_nil
+    it 'initialzies the game mode to 0' do
+      expect(game.game_mode).to eq(0)
     end
   end
 
@@ -38,7 +34,8 @@ describe Game do
 
   describe '#set_spot' do
     it 'puts the human icon (O) into the designated spot' do
-      game.set_spot(2)
+      game.player_one = Human.new('O')
+      game.set_spot(2, game.player_one)
       expect(game.board.tiles[2]).to eq('O')
     end
   end
